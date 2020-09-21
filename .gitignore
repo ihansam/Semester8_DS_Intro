@@ -1,0 +1,5 @@
+# ignore file format
+*.pptx
+*.docx
+
+# ignore directory
