@@ -2,7 +2,7 @@ import ctypes                       # for using array
 
 class DynamicArray:
     # ===========================================
-    C = 100     # constant for incremental replacement
+    C = 100000		# constant for incremental replacement
     # ===========================================
  
     def __init__(self):                             # Create Empty Array
