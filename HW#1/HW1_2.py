@@ -1,4 +1,9 @@
 # HW#1 JKD, ver 1.0 define classes
+
+
+
+
+
 # 1 Dynamic Array ===============================================================
 import ctypes                       # for using array
 
@@ -61,8 +66,7 @@ def compute_inc_average(n): # compute aveage running time for a incre-append
         data.append_incremental(None)
     end = time()                    # record end time
     return (end - start)/n          # calculate avg time (in seconds)
-# ===========================================
- 
+
 # HW1 main #
 print("[n, double(us), incremental(us)]")
 for i in range(2, 9):
@@ -70,35 +74,43 @@ for i in range(2, 9):
     runtime_d = round(compute_average(n)*1000000, 3)
     runtime_i = round(compute_inc_average(n)*1000000, 3)
     print([n, runtime_d, runtime_i])
-
+# ===========================================
 
 
 # 2 Stack =======================================================================
-class Empty(Exception):
+class Empty(Exception):                     # Empty Exception
     pass
 
-class ArrayStack:
-    def __init__(self):
+class ArrayStack:                           # Stack using Python list
+    
+    def __init__(self):                     # Create Empty stack
         self._data = []
 
-    def __len__(self):
+    def __len__(self):                      # return # of elments
         return len(self._data)
 
-    def is_empty(self):
+    def is_empty(self):                     # return empty or not
         return len(self._data) == 0
 
-    def push(self, e):
+    def push(self, e):                      # push 'e' on the top
         self._data.append(e)
 
-    def top(self):
-        if self.is_empty():
+    def top(self):                          # peek a top element
+        if self.is_empty():                 # empty check
             raise Empty('Stack is empty')
-        return self._data[-1]
+        return self._data[-1]               # last appended element
 
-    def pop(self):
-        if self.is_empty():
+    def pop(self):                          # remove and return the top element
+        if self.is_empty():                 # empty check
             raise Empty('Stack is empty')
         return self._data.pop()
+
+# =================================================
+def isPalindrome_Stack(string):
+    strsize = len(string)
+     
+
+# =================================================
 
 class ArrayQueue:
     DEFAULT_CAPACITY = 10
