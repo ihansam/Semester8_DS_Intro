@@ -1,58 +1,85 @@
 class Empty(Exception):                     # Empty Exception
     pass
 
-class ArrayQueue:
-    DEFAULT_CAPACITY = 10
+class ArrayQueue:                           # Double Ended Queue
+    DEFAULT_CAPACITY = 10                   # initial Deque size
 
-    def __init__(self):
+    def __init__(self):                     # create empty deque
         self._data = [None]*ArrayQueue.DEFAULT_CAPACITY
-        self._size = 0
-        self._front = 0
+        self._size = 0                      # number of element
+        self._front = 0                     # front index number
 
-    def __len__(self):
+    def __len__(self):                      # return current # of element
         return self._size
 
-    def is_empty(self):
+    def is_empty(self):                     # return deque is empty or not
         return self._size == 0
 
-    def first(self):
-        if self.is_empty():
+    def first(self):                        # peek the front element
+        if self.is_empty():                 # empty check
             raise Empty('Queue is empty')
-        return self._data[self._front]
+        return self._data[self._front]      
 
-    def dequeue(self):
-        if self.is_empty():
+    def last(self):                         # peek the last element
+        if self.is_empty():                 # empty check
             raise Empty('Queue is empty')
-        answer = self._data[self._front]
-        self._data[self._front] = None
-        self._front = (self._front + 1) % len(self._data)
-        self._size -= 1
+        lastidx = (self._front + self._size - 1) % len(self._data)
+        return self._data[lastidx]          
+
+    def _dequeue(self):                     # dequeue == delete first
+        if self.is_empty():                 # empty check
+            raise Empty('Queue is empty')
+        answer = self._data[self._front]    # get front element
+        self._data[self._front] = None      # remove front data
+        self._front = (self._front + 1) % len(self._data)   # update front
+        self._size -= 1                     # update size
         return answer
 
-    def enqueue(self, e):
-        if self._size == len(self._data):
-            self._resize(2*len(self.data))
-        avail = (self._front + self._size) % len(self._data)
-        self._data[avail] = e
-        self._size += 1
+    def _enqueue(self, e):                  # enqueue == add last 
+        if self._size == len(self._data):   # full check
+            self._resize(2*len(self._data)) # if full, doubling the size
+        avail = (self._front + self._size) % len(self._data)    # idx of last
+        self._data[avail] = e               # insert element
+        self._size += 1                     # update size
 
-    def _resize(self, cap):
-        old = self._data
-        self._data = [None]*cap
-        walk = self._front
-        for k in range(self._size):
-            self._data[k] = old[walk]
+    def _resize(self, cap):                 # method for size extand
+        old = self._data                    # copy old data
+        self._data = [None]*cap             # reset and resize the data array
+        walk = self._front                  # copy index (from front)
+        for k in range(self._size):         # paste old data to new object
+            self._data[k] = old[walk]       # using copy index 'walk'
             walk = (walk + 1) % len(old)
-        self._front = 0
+        self._front = 0                     # reset the front value
 
+    def add_first(self, e):                 # insert elemnt @ front-1
+        if self._size == len(self._data):   # full check
+            self._resize(2*len(self._data)) # if full, doubling the size
+        avail = (self._front - 1) % len(self._data) # idx of front-1
+        self._data[avail] = e               # insert
+        self._size += 1                     # update size
 
+    def add_last(self, e):                  # insert element @ last
+        ArrayQueue._enqueue(e)              # == enqueue()
+    
+    def delete_first(self):                 # delete element @ front
+        ArrayQueue._dequeue()               # == dequeue()
 
+    def delete_last(self):                  # delete element @ last
+        if self.is_empty():                 # empty check
+            raise Empty('Queue is empty')
+        delidx = (self._front + self._size - 1) % len(self._data)
+        answer = self._data[delidx]         # get last element
+        self._data[delidx] = None           # remove last data
+        self._size -= 1                     # update size
+        return answer
 
-
-
-
-
-
-
-
-
+if __name__ == '__main__':
+    DeQ = ArrayQueue()
+    for i in "world":
+        DeQ.add_first(i)
+    for i in range(len(DeQ)):
+        print(DeQ._data[i], end=" ")
+    print()    
+    while DeQ.is_empty() == False:
+        print(DeQ.delete_last())        
+  
