@@ -26,22 +26,22 @@ class ArrayStack:                           # Stack using Python list
         return self._data.pop()
 
 # =================================================
-def isPalindrome_Stack(string):
-    strsize = len(string)
-    pushend = int(strsize/2)
-    stack = ArrayStack()
-    for i in range(pushend):
+def isPalindrome_Stack(string):             # check string is Palindrome
+    strsize = len(string)                   # string size
+    pushend = int(strsize/2)                # half index for push
+    stack = ArrayStack()                    # create stack object
+    for i in range(pushend):                # from 0 to half index, push
         stack.push(string[i])
-    popstart = int((strsize+1)/2)
-    for j in range(popstart, strsize):
-        if string[j] != stack.pop():
-            return False
-    return True
+    popstart = int((strsize+1)/2)           # half index for pop
+    for j in range(popstart, strsize):      # from half index to end, pop
+        if string[j] != stack.pop():        # and compare
+            return False                    # break and return False
+    return True                             # return True
 
-if __name__ == '__main__':
-    print(isPalindrome_Stack("TENET"))
-    print(isPalindrome_Stack("TENNET"))
-    print(isPalindrome_Stack("MULAN"))
-    print(isPalindrome_Stack("MULLAN"))
-    print(isPalindrome_Stack(input("user's string: ")))
+if __name__ == '__main__':                  # for test
+    print(isPalindrome_Stack("TENET"))      # odd True
+    print(isPalindrome_Stack("TENNET"))     # even True 
+    print(isPalindrome_Stack("MULAN"))      # odd False
+    print(isPalindrome_Stack("MULLAN"))     # even False
+    print(isPalindrome_Stack(input("user's string: "))) # User input test
 # =================================================
