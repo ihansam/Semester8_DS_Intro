@@ -54,15 +54,15 @@ class ArrayQueue:                           # Double Ended Queue
     def add_first(self, e):                 # insert elemnt @ front-1
         if self._size == len(self._data):   # full check
             self._resize(2*len(self._data)) # if full, doubling the size
-        avail = (self._front - 1) % len(self._data) # idx of front-1
-        self._data[avail] = e               # insert
+        self._front = (self._front - 1) % len(self._data)   # front update
+        self._data[self._front] = e         # insert
         self._size += 1                     # update size
 
     def add_last(self, e):                  # insert element @ last
-        ArrayQueue._enqueue(e)              # == enqueue()
+        ArrayQueue._enqueue(self, e)        # == enqueue()
     
     def delete_first(self):                 # delete element @ front
-        ArrayQueue._dequeue()               # == dequeue()
+        return ArrayQueue._dequeue(self)    # == dequeue()
 
     def delete_last(self):                  # delete element @ last
         if self.is_empty():                 # empty check
@@ -73,13 +73,20 @@ class ArrayQueue:                           # Double Ended Queue
         self._size -= 1                     # update size
         return answer
 
-if __name__ == '__main__':
+
+def DEBUG():                # this procedure is not for HW but debugging my code
     DeQ = ArrayQueue()
-    for i in "world":
-        DeQ.add_first(i)
-    for i in range(len(DeQ)):
+    for i in "hello":
+        DeQ.add_last(i)
+    print(DeQ._front)
+    print(DeQ._size)
+    for i in range(len(DeQ._data)):
         print(DeQ._data[i], end=" ")
     print()    
     while DeQ.is_empty() == False:
-        print(DeQ.delete_last())        
-  
+        print(DeQ.delete_first())        
+
+if __name__ == '__main__':
+    DEBUG()
+
+
