@@ -85,24 +85,32 @@ def isPalindrome_DEQue(string):             # check string is Palindrome
             return False                    # break and return False
     return True                             # return True
 
-def DEBUG():                # this procedure is not for HW but debugging my code
-    DeQ = ArrayQueue()
-    for i in "hello":
-        DeQ.add_last(i)
-    print(DeQ._front)
-    print(DeQ._size)
-    for i in range(len(DeQ._data)):
-        print(DeQ._data[i], end=" ")
-    print()    
-    while DeQ.is_empty() == False:
-        print(DeQ.delete_first())        
+from time import time
+from HW1_2 import ArrayStack
+from HW1_2 import isPalindrome_Stack 
+def ExcuteTime(n):
+    string = " "*n
+    startS = time()
+    isP = isPalindrome_Stack(string)
+    endS = time()
+    timeS = round((endS - startS)*1000000, 3)
+    startQ = time()
+    isP = isPalindrome_DEQue(string)
+    endQ = time()
+    timeQ = round((endQ - startQ)*1000000, 3)
+    return n, timeS, timeQ
 
-if __name__ == '__main__':
-    # DEBUG()
+def DEBUG():                # this procedure is not for HW but debugging my code
     print(isPalindrome_DEQue("TENET"))      # odd True
     print(isPalindrome_DEQue("TENNET"))     # even True 
     print(isPalindrome_DEQue("MULAN"))      # odd False
     print(isPalindrome_DEQue("MULLAN"))     # even False
-    print(isPalindrome_DEQue(input("user's string: "))) # User input test    
 
+if __name__ == '__main__':
+    print("(n, Stack(us), DEQue(us))")
+    for i in range(1, 8):
+        n = 10**i
+        print(ExcuteTime(n))
+    # DEBUG()
+    print(isPalindrome_DEQue(input("user's string: "))) # User input test    
 
