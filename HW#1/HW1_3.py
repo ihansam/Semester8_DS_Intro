@@ -73,6 +73,17 @@ class ArrayQueue:                           # Double Ended Queue
         self._size -= 1                     # update size
         return answer
 
+def isPalindrome_DEQue(string):             # check string is Palindrome
+    strsize = len(string)                   # string size
+    addend = int(strsize/2)                 # half index for add
+    queue = ArrayQueue()                    # create deque object
+    for i in range(addend):                 # from 0 to half index, add last
+        queue.add_last(string[i])
+    delstart = int((strsize+1)/2)           # half index for delete
+    for j in range(delstart, strsize):      # from half index to end, dequeue
+        if string[j] != queue.delete_last():# and compare     
+            return False                    # break and return False
+    return True                             # return True
 
 def DEBUG():                # this procedure is not for HW but debugging my code
     DeQ = ArrayQueue()
@@ -87,6 +98,11 @@ def DEBUG():                # this procedure is not for HW but debugging my code
         print(DeQ.delete_first())        
 
 if __name__ == '__main__':
-    DEBUG()
+    # DEBUG()
+    print(isPalindrome_DEQue("TENET"))      # odd True
+    print(isPalindrome_DEQue("TENNET"))     # even True 
+    print(isPalindrome_DEQue("MULAN"))      # odd False
+    print(isPalindrome_DEQue("MULLAN"))     # even False
+    print(isPalindrome_DEQue(input("user's string: "))) # User input test    
 
 
