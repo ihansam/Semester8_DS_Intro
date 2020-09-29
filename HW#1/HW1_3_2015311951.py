@@ -86,8 +86,8 @@ def isPalindrome_DEQue(string):             # check string is Palindrome
     return True                             # return True
 
 from time import time
-from HW1_2 import ArrayStack
-from HW1_2 import isPalindrome_Stack 
+from HW1_2_2015311951 import ArrayStack
+from HW1_2_2015311951 import isPalindrome_Stack 
 def ExcuteTime(n):
     string = " "*n
     startS = time()
