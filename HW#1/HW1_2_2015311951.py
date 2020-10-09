@@ -39,9 +39,9 @@ def isPalindrome_Stack(string):             # check string is Palindrome
     return True                             # return True
 
 if __name__ == '__main__':                  # for test
-    print(isPalindrome_Stack("TENET"))      # odd True
-    print(isPalindrome_Stack("TENNET"))     # even True 
-    print(isPalindrome_Stack("MULAN"))      # odd False
-    print(isPalindrome_Stack("MULLAN"))     # even False
+    # print(isPalindrome_Stack("TENET"))      # odd True
+    # print(isPalindrome_Stack("TENNET"))     # even True 
+    # print(isPalindrome_Stack("MULAN"))      # odd False
+    # print(isPalindrome_Stack("MULLAN"))     # even False
     print(isPalindrome_Stack(input("user's string: "))) # User input test
 # =================================================

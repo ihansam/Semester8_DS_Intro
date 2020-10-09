@@ -88,17 +88,17 @@ def isPalindrome_DEQue(string):             # check string is Palindrome
 from time import time
 from HW1_2_2015311951 import ArrayStack
 from HW1_2_2015311951 import isPalindrome_Stack 
-def ExcuteTime(n):
-    string = " "*n
+def ExcuteTime(n):                              # compare acture running time
+    string = " "*n                              # make n size simple palindrome string
     startS = time()
     isP = isPalindrome_Stack(string)
     endS = time()
-    timeS = round((endS - startS)*1000000, 3)
+    timeS = round((endS - startS)*1000000, 3)   # stack running time (us)
     startQ = time()
     isP = isPalindrome_DEQue(string)
     endQ = time()
-    timeQ = round((endQ - startQ)*1000000, 3)
-    return n, timeS, timeQ
+    timeQ = round((endQ - startQ)*1000000, 3)   # deque running time (us)
+    return n, timeS, timeQ                      
 
 def DEBUG():                # this procedure is not for HW but debugging my code
     print(isPalindrome_DEQue("TENET"))      # odd True
@@ -106,11 +106,14 @@ def DEBUG():                # this procedure is not for HW but debugging my code
     print(isPalindrome_DEQue("MULAN"))      # odd False
     print(isPalindrome_DEQue("MULLAN"))     # even False
 
+def EXPERIMENT():           # compare stack/deque palindrome checker running time
+    print("(n, Stack(us), DEQue(us))")      
+    for i in range(2, 9):                   
+        n = 10**i                           # for n = 10^2 to 10^8
+        print(ExcuteTime(n))                # print acture running time
+
 if __name__ == '__main__':
-    print("(n, Stack(us), DEQue(us))")
-    for i in range(1, 8):
-        n = 10**i
-        print(ExcuteTime(n))
     # DEBUG()
+    EXPERIMENT()
     print(isPalindrome_DEQue(input("user's string: "))) # User input test    
 
