@@ -1,44 +1,43 @@
+#1. Linked-Based BST
 class Node:
-    def __init__(self, key, value, ledt=None, right=None):
+    def __init__(self, key, value, left=None, right=None):
         self.key    = key
         self.value  = value
         self.left   = left
         self.right  = right
-        self.item   = (key, value)
 
-#1. Linked-based BST
-class BST:
-    def __init__(self):         # Make Tree
-        self.root = None        # tree root
+class LinkedBST:                # Linked Structure Binary Search Tree
+    def __init__(self):         # Empty BST initialize
+        self.root = None        
 
     # [SEARCH]
-    def get(self, key):         
-        return self._get_item(self.root, k) # start from root
+    def get(self, k):           # get value of key
+        print(self._get_item(self.root, k)) # search from the root node
 
-    def _get_item(self, n, k):  # compare node, key
-        if n == None:           # no such key in Tree
+    def _get_item(self, n, k):  # compare the node & key
+        if n == None:           # No such Key in the BST
             return None
-        if n.key > k:           # smaller target, go left
+        if n.key > k:           # smaller key, go left
             return self._get_item(n.left, k)
-        elif n.key < k:         # larger target, go right
+        elif n.key < k:         # larger key, go right
             return self._get_item(n.right, k)
-        else:                   # find target
-            return n.value
+        else:                   # target key found
+            return n.value      # return value of the node
 
     # [INSERT]
-    def put(self, key, value):
-        self.root = self._put_item(self.root, key, value)   # start from root
+    def put(self, k, v):        # put a new node to BST
+        self.root = self._put_item(self.root, k, v)   # search place from root
 
     def _put_item(self, n, key, value):
-        if n == None:
-            return Node(key, value) # make new node to n
-        if n.key > key:             # smaller key, go left
+        if n == None:                   # found inserting place
+            return Node(key, value)     # => insert new node
+        if n.key > key:                 # smaller key, go left
             n.left = self._put_item(n.left, key, value)
-        elif n.key < key:           # larger key, go right
-            n.right = slef._put_item(n.right, key, value)
-        else:                       # already key exist
-            n.value = value
-        return n                    # return the node
+        elif n.key < key:               # larger key, go right
+            n.right = self._put_item(n.right, key, value)
+        else:                           # already key exist
+            n.value = value             # => just update value
+        return n                        # return the node
 
     # [DELETE]
     def _min(self):     # find min node
@@ -82,53 +81,87 @@ class BST:
             n.right = self._del_min(target.right)
             n.left = target.left
         return n
+    
+    # [Treversal]
+    def preorder(self):
+        self._preorder(self.root)   # start from the root
+        print()
 
-    def preorder(self, n):
-        if n != None:
-            print(str(n.item), ' ', end = ' ')
-            if n.left:
-                self.preorder(n.left)
-            if n.right:
-                self.preorder(n.right)
+    def _preorder(self, n): # private
+        if n != None:       # if not empty, print root first
+            print(str((n.key, n.value)), end=" ")
+            if n.left:      # print left
+                self._preorder(n.left)
+            if n.right:     # print right
+                self._preorder(n.right)
+    
+    def postorder(self):
+        self._postorder(self.root)  # start from the root
+        print()
 
-    def postorder(self, n):
-        if n != None:
-            if n.left:
-                self.postorder(n.left)
-            if n.right:
-                self.postorder(n.right)
-            print(str(n.item), ' ', end=' ')
+    def _postorder(self, n):    # private
+        if n != None:           # if not empty,
+            if n.left:          # print left first,
+                self._postorder(n.left)
+            if n.right:         # and right, and the root
+                self._postorder(n.right)
+            print(str((n.key, n.value)), end=" ")
 
-    def inorder(self, n):
-        if n != None:
-            if n.left:
-                self.inorder(n.left)
-            print(str(n.item), ' ', end=' ')
-            if n.right:
-                self.inorder(n.right)
+    def inorder(self):
+        self._inorder(self.root)    # start from the root
+        print()
 
-    def levelorder(self, root):
-        q = []
-        q.append(root)
-        while len(q) != 0:
-            t = q.pop(0)
-            print(str(t.item), ' ', end=' ')
-            if t.left != None:
-                q.append(t.left)
-            if t.right != None:
-                q.append(t.right)
+    def _inorder(self, n):      # private
+        if n != None:           # if not empty
+            if n.left:          # print left first, and root,
+                self._inorder(n.left)
+            print(str((n.key, n.value)), end=" ")
+            if n.right:         # and right
+                self._inorder(n.right)
+
+    def levelorder(self):
+        self._levelorder(self.root) # start from the root
+
+    def _levelorder(self, root):    # private
+        q = []                      # Queue
+        q.append(root)              # append the root node
+        while len(q) != 0:          # iteration until the Queue is empty
+            n = q.pop(0)            # travel first node in the Queue
+            print(str((n.key, n.value)), end=" ")
+            if n.left != None:      # insert node's left child if exist
+                q.append(n.left)
+            if n.right != None:     # insert node's right child if exist
+                q.append(n.right)
+        print()
 
 def CheckLinkBST():
-    pass
-    print("hello")
+    lt = LinkedBST()
+    lt.put(10, 'P')
+    lt.levelorder()
+    lt.put(5, 'K')
+    lt.levelorder()
+    lt.put(15, 'U')
+    lt.levelorder()
+    lt.put(3, 'I')
+    lt.levelorder()
+    lt.put(17, 'W')
+    lt.levelorder()
+    lt.put(2, 'H')
+    lt.levelorder()
+    lt.put(19, 'Y')
+    lt.levelorder()
+    lt.put(4, 'J')
+    lt.levelorder()
+    lt.put(8, 'N')
+    lt.levelorder()
+    lt.put(9, 'O')
+    lt.levelorder()
 
 def CheckArrayBST():
     pass
-    print("world")
 
 def RunTimeAnalysis():
     pass
-    print("!!!!!")
 
 if __name__ == "__main__":
     CheckLinkBST()
