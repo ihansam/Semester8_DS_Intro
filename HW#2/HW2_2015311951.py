@@ -6,13 +6,13 @@ class Node:
         self.left   = left
         self.right  = right
 
-class LinkedBST:                # Linked Structure Binary Search Tree
+class BST:                      # Linked Structure Binary Search Tree
     def __init__(self):         # Empty BST initialize
         self.root = None        
 
     # [SEARCH]
     def get(self, k):           # get value of key
-        print(self._get_item(self.root, k)) # search from the root node
+        return self._get_item(self.root, k) # search from the root node
 
     def _get_item(self, n, k):  # compare the node & key
         if n == None:           # No such Key in the BST
@@ -134,8 +134,7 @@ class LinkedBST:                # Linked Structure Binary Search Tree
             if n.right != None:     # insert node's right child if exist
                 q.append(n.right)
 
-def CheckLinkBST():
-    lt = LinkedBST()
+def Check(lt):
     lt.put(10, 'P')
     lt.levelorder()
     lt.put(5, 'K')
@@ -162,21 +161,114 @@ def CheckLinkBST():
     lt.levelorder()
     lt.delete(17)
     lt.levelorder()
-    lt.get(19)
-    lt.get(8)
+    print(lt.get(19))
+    print(lt.get(8))
     lt.preorder()
     lt.postorder()
     lt.inorder()
     lt.levelorder()
 
-def CheckArrayBST():
-    pass
+#2. Array-Based BST
+def parent(n):          # return parent index
+    if n>0:
+        return int((n-1)/2)
+    else:
+        return None
+    
+def left(n):            # return left child index
+    return 2*n+1
+
+def right(n):           # return right child index
+    return 2*n+2
+   
+class BST_ARRAY:
+    def __init__(self):
+        self._keydata = []          # key data
+        self._valdata = []          # value data
+        self._count = 0             # number of items
+    
+    def __str__(self):              # for check array elements
+        return 'KEY: ' + str(self._keydata) + '\nVAL: ' + str(self._valdata)
+
+    def isEmpty(self):              # check Empty or not
+        return self._count == 0
+
+    # [SEARCH]
+    def get(self, k):               # search a value with key
+        return self._get(k)[1]      # only return the value
+
+    def _get(self, key):            # private search method
+        idx = 0                     # search index
+        while (True):
+            try:                    # get key of index
+                n = self._keydata[idx]
+            except:                 # index overflow
+                return None, None, idx  # => not exist
+            if n == None:           # node is empty
+                return n, None, idx     # => not exist
+            elif n > key:           # smaller key, go left
+                idx = left(idx)
+            elif n < key:           # larger key, go right
+                idx = right(idx)
+            else:                   # key found, return (key, value, index)
+                return n, self._valdata[idx], idx
+
+    # [INSERT]
+    def _sizeup(self):              # array size doubling method
+        size = len(self._keydata)+1
+        self._keydata += [None for _ in range(size)]
+        self._valdata += [None for _ in range(size)]
+
+    def put(self, key, value):              # insert method
+        n, val, idx = self._get(key)        # find insert place
+        while idx >= len(self._keydata):    # if overflow
+            self._sizeup()                  # size doubling
+        self._keydata[idx] = key            # key update
+        self._valdata[idx] = value          # value update
+
+"""
+        idx = 0                     # search index
+        done = False                # iteration Flag
+        while (not done):
+            try:                    # get key of idx
+                n = self._keydata[idx]
+            except:                 # indexing error
+                self._sizeup()      # => need to size up
+                continue
+            if n == None:           # found inserting place
+                self._keydata[idx] = key    
+                self._valdata[idx] = value
+                done = True
+            elif n > key:           # smaller key, go left
+                idx = left(idx)
+            elif n < key:           # larger key, go right
+                idx = right(idx)
+            else:                   # already exist key
+                self._valdata[idx] = value  # update value only
+                done = True
+"""
+    # [DELETE]
+
 
 def RunTimeAnalysis():
     pass
 
 if __name__ == "__main__":
-    CheckLinkBST()
-    CheckArrayBST()
+    bst_link = BST()
+    Check(bst_link)
+    bst_array = BST_ARRAY()
+    print(bst_array.get(0))
+    bst_array.put(11, "eleven")
+    print(bst_array)
+    bst_array.put(2, "two")
+    print(bst_array)
+    bst_array.put(3, "eight")
+    print(bst_array)
+    bst_array.put(3, "three")
+    print(bst_array)
+
+    print(bst_array.get(3))
+    
+    # Check(bst_array)
     RunTimeAnalysis()
 
