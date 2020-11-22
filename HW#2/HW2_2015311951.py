@@ -40,46 +40,46 @@ class LinkedBST:                # Linked Structure Binary Search Tree
         return n                        # return the node
 
     # [DELETE]
-    def _min(self):     # find min node
+    def min(self):          # find min node
         if self.root == None:
             return None
-        return self._minimum(self.root)
+        return self._minimum(self.root) # find from root
 
-    def _minimum(self, n):
+    def _minimum(self, n):  # private method
         if n.left == None:  # min node found
             return n
         return self._minimum(n.left)    # else go left
 
-    def delete_min(slef):   # delete minumum node
+    def delete_min(slef):   # delete minumum node in the tree
         if self.root == None:
             print("Tree is Empty")
-        self.root = self._del_min(self.root)
+        self.root = self._del_min(self.root)    # search from the root
         
-    def _del_min(self, n):
-        if n.left == None:
-            return n.right
-        n.left = self._del_min(n.left)
+    def _del_min(self, n):  # private method
+        if n.left == None:  # n don't have left child => n is min node
+            return n.right  # replace n = n.right
+        n.left = self._del_min(n.left)  # n has left child => go left
         return n
 
-    def delete(self, k):
-        self.root = self._del_node(self.root, k)
+    def delete(self, k):            # delete node by key
+        self.root = self._del_node(self.root, k)    # search from root
     
     def _del_node(self, n, k):
-        if n == None:
+        if n == None:               # node search fail
             return None
-        if n.key > k:
+        if n.key > k:               # smaller target, go left
             n.left = self._del_node(n.left, k)
-        elif n.key > k:
+        elif n.key < k:             # bigger target, go right
             n.right = self._del_node(n.right, k)
-        else:
-            if n.right == None:
-                return n.left
-            if n.left == None:
-                return n.right
-            target = n
-            n = self._minimum(target.right)
-            n.right = self._del_min(target.right)
-            n.left = target.left
+        else:                       # target found
+            if n.right == None:     # no child & only left child case
+                return n.left       # => connect left subtree
+            if n.left == None:      # only right child case
+                return n.right      # => connect right subtree
+            target = n              # both child exist case
+            n = self._minimum(target.right) # replace target to successor node  
+            n.right = self._del_min(target.right)   # connect right w/o n
+            n.left = target.left                    # connect left
         return n
     
     # [Treversal]
@@ -121,6 +121,7 @@ class LinkedBST:                # Linked Structure Binary Search Tree
 
     def levelorder(self):
         self._levelorder(self.root) # start from the root
+        print()
 
     def _levelorder(self, root):    # private
         q = []                      # Queue
@@ -132,7 +133,6 @@ class LinkedBST:                # Linked Structure Binary Search Tree
                 q.append(n.left)
             if n.right != None:     # insert node's right child if exist
                 q.append(n.right)
-        print()
 
 def CheckLinkBST():
     lt = LinkedBST()
@@ -155,6 +155,18 @@ def CheckLinkBST():
     lt.put(8, 'N')
     lt.levelorder()
     lt.put(9, 'O')
+    lt.levelorder()
+    lt.delete(5)
+    lt.levelorder()
+    lt.delete(3)
+    lt.levelorder()
+    lt.delete(17)
+    lt.levelorder()
+    lt.get(19)
+    lt.get(8)
+    lt.preorder()
+    lt.postorder()
+    lt.inorder()
     lt.levelorder()
 
 def CheckArrayBST():
