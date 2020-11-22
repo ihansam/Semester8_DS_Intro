@@ -225,6 +225,79 @@ class BST_ARRAY:
             self._sizeup()                  # size doubling
         self._keydata[idx] = key            # key update
         self._valdata[idx] = value          # value update
+        self._count += 1                    # count update
+
+    # [DELETE]
+    def _rightChildPromote(self, root): # delete root and promote right child
+        if self._keydata[left(root)] == None:   # when left child is empty
+            self._nodePromote(right(root), root)
+    
+    def _nodePromote(self, where, to):  # node promote recursively
+        key = self._keydata[where]      # save where node 
+        val = self._valdata[where]       
+        self._keydata[to] = key         # replace to node
+        self._valdata[to] = val         
+        self._keydata[where] = None     # delete where node
+        self._valdata[where] = None
+        try:                            # check where's left exist
+            if(self._keydata[left(where)] != None):
+                self._nodePromote(left(where), left(to))
+        except:
+            pass
+        try:                            # check where's right exist
+            if(self._keydata[right(where)] != None):
+                self._nodePromote(right(where), right(to))
+        except:
+            pass
+
+    def _minimum(self, start):          # find minimun node
+        idx = start                     # from start index
+        n = self._keydata[idx]          # key of the node
+        if n == None:                   # Empty case return
+            return None, None, None
+        while (n != None):              # go left until meet None
+            try:
+                idx = left(idx)
+                n = self._keydata[idx]  # or meet undefined node
+            except:
+                break
+        idx = parent(idx)               # return minimun node
+        return self._keydata[idx], self._valdata[idx], idx
+
+    def delete(self, key):              # delete node by key
+        target, v, idx = self._get(key) # find delete node
+        if target == key:               # if delete node exist
+            # successor = 
+            pass
+
+def RunTimeAnalysis():
+    pass
+
+if __name__ == "__main__":
+    bst_link = BST()
+    Check(bst_link)
+    bst_array = BST_ARRAY()
+    print(bst_array.get(0))
+    bst_array.put(11, "eleven")
+    print(bst_array)
+    bst_array.put(13, "two")
+    print(bst_array)
+    bst_array.put(15, "eight")
+    print(bst_array)
+    bst_array.put(15, "twelve")
+    print(bst_array)
+
+    bst_array.put(4, "twelve")
+    bst_array.put(8, "twelve")
+    bst_array.put(2, "twelve")
+    bst_array.put(14, "twelve")
+    print(bst_array)
+    print(str(bst_array._minimum(2)))
+
+
+    # Check(bst_array)
+    RunTimeAnalysis()
+
 
 """
         idx = 0                     # search index
@@ -247,28 +320,3 @@ class BST_ARRAY:
                 self._valdata[idx] = value  # update value only
                 done = True
 """
-    # [DELETE]
-
-
-def RunTimeAnalysis():
-    pass
-
-if __name__ == "__main__":
-    bst_link = BST()
-    Check(bst_link)
-    bst_array = BST_ARRAY()
-    print(bst_array.get(0))
-    bst_array.put(11, "eleven")
-    print(bst_array)
-    bst_array.put(2, "two")
-    print(bst_array)
-    bst_array.put(3, "eight")
-    print(bst_array)
-    bst_array.put(3, "three")
-    print(bst_array)
-
-    print(bst_array.get(3))
-    
-    # Check(bst_array)
-    RunTimeAnalysis()
-
