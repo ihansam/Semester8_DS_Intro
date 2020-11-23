@@ -228,7 +228,7 @@ class BST_ARRAY:
         self._count += 1                    # count update
 
     # [DELETE]
-    def _rightChildPromote(self, root): # delete root and promote right child
+    def _rightChildPromote(self, root): # delete root and promote right child   <= Need to Delete
         if self._keydata[left(root)] == None:   # when left child is empty
             self._nodePromote(right(root), root)
     
@@ -239,36 +239,50 @@ class BST_ARRAY:
         self._valdata[to] = val         
         self._keydata[where] = None     # delete where node
         self._valdata[where] = None
-        try:                            # check where's left exist
-            if(self._keydata[left(where)] != None):
+        if (left(where) < len(self._keydata)):  # next depth exist check
+            if(self._keydata[left(where)] != None):     # go left if exist
                 self._nodePromote(left(where), left(to))
-        except:
-            pass
-        try:                            # check where's right exist
-            if(self._keydata[right(where)] != None):
+            if(self._keydata[right(where)] != None):    # go right if exist
                 self._nodePromote(right(where), right(to))
-        except:
-            pass
 
     def _minimum(self, start):          # find minimun node
         idx = start                     # from start index
-        n = self._keydata[idx]          # key of the node
-        if n == None:                   # Empty case return
-            return None, None, None
-        while (n != None):              # go left until meet None
-            try:
-                idx = left(idx)
-                n = self._keydata[idx]  # or meet undefined node
-            except:
-                break
-        idx = parent(idx)               # return minimun node
-        return self._keydata[idx], self._valdata[idx], idx
+        if self._keydata[idx] == None:  # Empty case return
+            return None
+        size = len(self._keydata)       # until meet None or Undefined node
+        while (idx < size and self._keydata[idx] != None):
+            idx = left(idx)             # go left
+        return parent(idx)              # and return index
 
     def delete(self, key):              # delete node by key
-        target, v, idx = self._get(key) # find delete node
-        if target == key:               # if delete node exist
-            # successor = 
-            pass
+        n, v, idx = self._get(key)      # find delete node
+        if n == key:                    # if delete node exist
+            if (left(n) >= len(self._keydata)):
+                self._keydata[idx] = None
+                self._valdata[idx] = None
+            elif (self._keydata[left(idx)] == None):
+                self._nodePromote(right(idx), idx)
+            elif (self._keydata[right(idx)] == None):
+                self._nodePromote(left(idx), idx)
+            else:
+                successor = self._minimum(right(idx))
+                self._keydata[idx] = self._keydata[successor]
+                self._valdata[idx] = self._valdata[successor]
+                try:
+                    self._rightChildPromote(successor)
+                except:
+                    pass
+    def preorder(self):
+        pass
+
+    def inorder(self):
+        pass
+
+    def postorder(self):
+        pass
+
+    def levelorder(self):
+        print(self)
 
 def RunTimeAnalysis():
     pass
@@ -277,25 +291,8 @@ if __name__ == "__main__":
     bst_link = BST()
     Check(bst_link)
     bst_array = BST_ARRAY()
-    print(bst_array.get(0))
-    bst_array.put(11, "eleven")
-    print(bst_array)
-    bst_array.put(13, "two")
-    print(bst_array)
-    bst_array.put(15, "eight")
-    print(bst_array)
-    bst_array.put(15, "twelve")
-    print(bst_array)
+    Check(bst_array)
 
-    bst_array.put(4, "twelve")
-    bst_array.put(8, "twelve")
-    bst_array.put(2, "twelve")
-    bst_array.put(14, "twelve")
-    print(bst_array)
-    print(str(bst_array._minimum(2)))
-
-
-    # Check(bst_array)
     RunTimeAnalysis()
 
 
