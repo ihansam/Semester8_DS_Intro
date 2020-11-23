@@ -183,16 +183,16 @@ def right(n):           # return right child index
    
 class BST_ARRAY:
     def __init__(self):
-        self._keydata = []          # key data
-        self._valdata = []          # value data
+        self._keydata = []          # key data array
+        self._valdata = []          # value data array
     
     def __str__(self):              # for check array elements
         return 'KEY: ' + str(self._keydata) + '\nVAL: ' + str(self._valdata)
 
     def isEmpty(self):              # check Empty or not
-        try:
+        try:                        # by check root key
             return self._keydata[0] == None
-        except:
+        except:                     # root not exist
             return True
 
     # [SEARCH]
@@ -229,10 +229,6 @@ class BST_ARRAY:
         self._valdata[idx] = value          # value update
 
     # [DELETE]
-    def _rightChildPromote(self, root): # delete root and promote right child   <= Need to Delete
-        if self._keydata[left(root)] == None:   # when left child is empty
-            self._nodePromote(right(root), root)
-    
     def _nodePromote(self, where, to):  # node promote recursively
         key = self._keydata[where]      # save where node 
         val = self._valdata[where]       
@@ -258,20 +254,20 @@ class BST_ARRAY:
     def delete(self, key):              # delete node by key
         n, v, idx = self._get(key)      # find delete node
         if n == key:                    # if delete node exist
-            if (left(idx) >= len(self._keydata)):
-                self._keydata[idx] = None
+            if (left(idx) >= len(self._keydata)):   # child undefined case
+                self._keydata[idx] = None           # => just delete
                 self._valdata[idx] = None
-            elif (self._keydata[left(idx)] == None):
-                self._nodePromote(right(idx), idx)
-            elif (self._keydata[right(idx)] == None):
-                self._nodePromote(left(idx), idx)
+            elif (self._keydata[left(idx)] == None):    # left child empty
+                self._nodePromote(right(idx), idx)      # => right child Promote
+            elif (self._keydata[right(idx)] == None):   # right child empty
+                self._nodePromote(left(idx), idx)       # => left child Promote
             else:
-                successor = self._minimum(right(idx))
-                self._keydata[idx] = self._keydata[successor]
+                successor = self._minimum(right(idx))   # find successor index
+                self._keydata[idx] = self._keydata[successor]   # replace
                 self._valdata[idx] = self._valdata[successor]
-                self._keydata[successor] = None
-                self._valdata[successor] = None
-                try:
+                self._keydata[successor] = None                 # and delete
+                self._valdata[successor] = None                 # the successor
+                try:    # if successor has right child, promote right subtree
                     if(self._keydata[right(successor)] != None):
                         self._nodePromote(right(successor), successor)
                 except:
@@ -288,7 +284,7 @@ class BST_ARRAY:
         pass
 
     def levelorder(self):
-        print(self)
+        pass
 
 def RunTimeAnalysis():
     pass
@@ -301,24 +297,4 @@ if __name__ == "__main__":
     RunTimeAnalysis()
 
 
-"""
-        idx = 0                     # search index
-        done = False                # iteration Flag
-        while (not done):
-            try:                    # get key of idx
-                n = self._keydata[idx]
-            except:                 # indexing error
-                self._sizeup()      # => need to size up
-                continue
-            if n == None:           # found inserting place
-                self._keydata[idx] = key    
-                self._valdata[idx] = value
-                done = True
-            elif n > key:           # smaller key, go left
-                idx = left(idx)
-            elif n < key:           # larger key, go right
-                idx = right(idx)
-            else:                   # already exist key
-                self._valdata[idx] = value  # update value only
-                done = True
-"""
+
