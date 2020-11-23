@@ -185,13 +185,15 @@ class BST_ARRAY:
     def __init__(self):
         self._keydata = []          # key data
         self._valdata = []          # value data
-        self._count = 0             # number of items
     
     def __str__(self):              # for check array elements
         return 'KEY: ' + str(self._keydata) + '\nVAL: ' + str(self._valdata)
 
     def isEmpty(self):              # check Empty or not
-        return self._count == 0
+        try:
+            return self._keydata[0] == None
+        except:
+            return True
 
     # [SEARCH]
     def get(self, k):               # search a value with key
@@ -225,7 +227,6 @@ class BST_ARRAY:
             self._sizeup()                  # size doubling
         self._keydata[idx] = key            # key update
         self._valdata[idx] = value          # value update
-        self._count += 1                    # count update
 
     # [DELETE]
     def _rightChildPromote(self, root): # delete root and promote right child   <= Need to Delete
@@ -257,7 +258,7 @@ class BST_ARRAY:
     def delete(self, key):              # delete node by key
         n, v, idx = self._get(key)      # find delete node
         if n == key:                    # if delete node exist
-            if (left(n) >= len(self._keydata)):
+            if (left(idx) >= len(self._keydata)):
                 self._keydata[idx] = None
                 self._valdata[idx] = None
             elif (self._keydata[left(idx)] == None):
@@ -268,10 +269,15 @@ class BST_ARRAY:
                 successor = self._minimum(right(idx))
                 self._keydata[idx] = self._keydata[successor]
                 self._valdata[idx] = self._valdata[successor]
+                self._keydata[successor] = None
+                self._valdata[successor] = None
                 try:
-                    self._rightChildPromote(successor)
+                    if(self._keydata[right(successor)] != None):
+                        self._nodePromote(right(successor), successor)
                 except:
                     pass
+    
+    # [Treversal]
     def preorder(self):
         pass
 
@@ -292,7 +298,6 @@ if __name__ == "__main__":
     Check(bst_link)
     bst_array = BST_ARRAY()
     Check(bst_array)
-
     RunTimeAnalysis()
 
 
