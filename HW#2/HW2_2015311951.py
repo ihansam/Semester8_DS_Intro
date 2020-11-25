@@ -1,11 +1,13 @@
+# Data Structure HW#2, SKKU EEE Kidan Jin
 #1. Linked-Based BST
+# [Node Class]
 class Node:
     def __init__(self, key, value, left=None, right=None):
         self.key    = key
         self.value  = value
         self.left   = left
         self.right  = right
-
+# [BST Class]
 class BST:                      # Linked Structure Binary Search Tree
     def __init__(self):         # Empty BST initialize
         self.root = None        
@@ -50,7 +52,7 @@ class BST:                      # Linked Structure Binary Search Tree
             return n
         return self.__minimum(n.left)       # else go left
 
-    def delete_min(slef):   # delete minumum node in the tree
+    def delete_min(self):   # delete minumum node in the tree
         if self.root == None:
             print("Tree is Empty")
         self.root = self.__del_min(self.root)   # search from the root
@@ -77,7 +79,7 @@ class BST:                      # Linked Structure Binary Search Tree
             if n.left == None:      # only right child case
                 return n.right      # => connect right subtree
             target = n              # both child exist case
-            n = self.__minimum(target.right) # replace target to successor node  
+            n = self.__minimum(target.right)        # replace target to successor node  
             n.right = self.__del_min(target.right)  # connect right w/o n
             n.left = target.left                    # connect left
         return n
@@ -125,7 +127,8 @@ class BST:                      # Linked Structure Binary Search Tree
 
     def __levelorder(self, root):   
         q = []                      # Queue
-        q.append(root)              # append the root node
+        if (root != None):          # append the root if not None
+            q.append(root)          
         while len(q) != 0:          # iteration until the Queue is empty
             n = q.pop(0)            # travel first node in the Queue
             print(str((n.key, n.value)), end=" ")
@@ -134,41 +137,26 @@ class BST:                      # Linked Structure Binary Search Tree
             if n.right != None:     # insert node's right child if exist
                 q.append(n.right)
 
-def Check(lt):
-    lt.put(10, 'P')
-    lt.levelorder()
-    lt.put(5, 'K')
-    lt.levelorder()
-    lt.put(15, 'U')
-    lt.levelorder()
-    lt.put(3, 'I')
-    lt.levelorder()
-    lt.put(17, 'W')
-    lt.levelorder()
-    lt.put(2, 'H')
-    lt.levelorder()
-    lt.put(19, 'Y')
-    lt.levelorder()
-    lt.put(4, 'J')
-    lt.levelorder()
-    lt.put(8, 'N')
-    lt.levelorder()
-    lt.put(9, 'O')
-    lt.levelorder()
-    lt.delete(5)
-    lt.levelorder()
-    lt.delete(3)
-    lt.levelorder()
-    lt.delete(17)
-    lt.levelorder()
-    print(lt.get(19))
-    print(lt.get(8))
-    lt.preorder()
-    lt.postorder()
-    lt.inorder()
-    lt.levelorder()
+# [Test Procedure]
+def Check(BST):
+    indata = [(10,'P'),(5,'K'),(15,'U'),(3,'I'),(17,'W'),\
+            (2,'H'),(19,'Y'),(4,'J'),(8,'N'),(9,'O')]
+    for key, value in indata:
+        BST.put(key, value)
+        BST.levelorder()
+    outdata = [(5,'K'), (3,'I'), (17,'W')]
+    for key, value in outdata:
+        BST.delete(key)
+        BST.levelorder()
+    print(BST.get(19))
+    print(BST.get(8))
+    BST.preorder()
+    BST.postorder()
+    BST.inorder()
+    BST.levelorder()
 
 #2. Array-Based BST
+# [node index functions]
 def parent(n):          # return parent index
     if n>0:
         return int((n-1)/2)
@@ -180,7 +168,8 @@ def left(n):            # return left child index
 
 def right(n):           # return right child index
     return 2*n+2
-   
+
+# [BST Class]
 class BST_ARRAY:
     def __init__(self):
         self.__keydata = []         # key data array
@@ -275,65 +264,122 @@ class BST_ARRAY:
     
     # [Treversal]
     def preorder(self):
-        self.__preorder(0)
+        self.__preorder(0)              # start from root
         print()
     
     def __preorder(self, i):
         try:
-            n = self.__keydata[i]
-        except:
-            return
-        if n!= None:
-            print(str((n, self.__valdata[i])), end=" ")
-            self.__preorder(left(i))
-            self.__preorder(right(i))
+            n = self.__keydata[i]       # get i-th key
+        except:                         
+            return                      # not exist => return
+        if n!= None:                    # None => return
+            print(str((n, self.__valdata[i])), end=" ") # travel root
+            self.__preorder(left(i))                    # left child
+            self.__preorder(right(i))                   # right child
 
     def inorder(self):
-        self.__inorder(0)
+        self.__inorder(0)               # start from root
         print()
 
     def __inorder(self, i):
         try:
-            n = self.__keydata[i]
-        except:
-            return
-        if n!= None:
-            self.__inorder(left(i))
-            print(str((n, self.__valdata[i])), end=" ")
-            self.__inorder(right(i))
+            n = self.__keydata[i]       # get i-th key
+        except:                         
+            return                      # not exist => return
+        if n!= None:                    # None => return
+            self.__inorder(left(i))                     # left child
+            print(str((n, self.__valdata[i])), end=" ") # travel root
+            self.__inorder(right(i))                    # right child
 
     def postorder(self):
-        self.__postorder(0)
+        self.__postorder(0)             # start from root
         print()
 
     def __postorder(self, i):
-        try:
-            n = self.__keydata[i]
-        except:
-            return
-        if n!= None:
-            self.__postorder(left(i))
-            self.__postorder(right(i))
-            print(str((n, self.__valdata[i])), end=" ")
+        try:                            
+            n = self.__keydata[i]       # get i-th key
+        except:                         
+            return                      # not exist => return
+        if n!= None:                    # None => return
+            self.__postorder(left(i))                   # left child
+            self.__postorder(right(i))                  # right child
+            print(str((n, self.__valdata[i])), end=" ") # travel root
 
     def levelorder(self):
-        if not self.isEmpty():
+        if not self.isEmpty():          # Empty Check
             for key, value in zip(self.__keydata, self.__valdata):
-                if key != None:
+                if key != None:         # travel not None keys sequentially
                     print(str((key, value)), end=" ")
-            print()
+        print()
+
+#3. Running time Analysis
+from time import time
+from random import randint as rand
+
+def run(bst, n, shuffle):
+    # make n elements BST
+    if shuffle:     # random case, random data
+        for i in range(n):
+            bst.put(rand(0, 2*n), 0)
+    else:           # worst case, sequential data
+        for i in range(n):
+            bst.put(2*i, 0)
+
+    # average INSERT time (ns)
+    num = 10        # number of tries
+    s = time()
+    for i in range(num):
+        bst.put(rand(0, 2*n), 0)
+    e = time()
+    intime = int((e-s)/num*1000000000)
+
+    # average SEARCH time (ns)
+    s = time()
+    for i in range(num):
+        bst.get(rand(0, 2*n))
+    e = time()
+    stime = int((e-s)/num*1000000000)
+
+    # aveage DELETE time (ns)
+    s - time()
+    for i in range(num):
+        bst.delete(rand(0, 2*n))
+    e = time()
+    dtime = int((e-s)/num*1000000000)
+
+    # print results
+    print("n = ", n, " Insert: ", intime, " Search: ", stime, " Delete: ", dtime)
 
 def RunTimeAnalysis():
-    pass
+    print("[Worst Case]")
+    print("{Linked-based}")
+    for i in range(0, 7, 1):
+        n = 10*(2**i)
+        bstlnk = BST()          # linked-based BST worst case
+        run(bstlnk, n, False)   # do not shuffle
+    print("{Array-based}")
+    for n in range(2, 17, 2):
+        bstarr = BST_ARRAY()    # array-based BST worst case
+        run(bstarr, n, False)   # do not shuffle
+    print("[Common Case]")
+    print("{Linked-based}")
+    for i in range(5, 11, 1):
+        n = 2**i
+        bstlnk2 = BST()         # linked-based BST avg case
+        run(bstlnk2, n, True)   # shuffle
+    print("{Array-based}")
+    for i in range(5, 11, 1):
+        n = 2**i
+        bstarr2 = BST_ARRAY()   # array_based BST avg case
+        run(bstarr2, n, True)   # shuffle
 
 if __name__ == "__main__":
-    print("#1. linked based BST ================================================== ")
+    print("#1. linked based BST ===============================================")
     bst_link = BST()
-    Check(bst_link)
-    print("\n#2. array based BST =================================================== ")
+    Check(bst_link)             # Check linked_based BST
+    print("\n#2. array based BST ==============================================")
     bst_array = BST_ARRAY()
-    Check(bst_array)
-    print("\n#3. Run Time Analysis ================================================== ")
-    RunTimeAnalysis()
-
+    Check(bst_array)            # Check array_based BST
+    print("\n#3. Run Time Analysis ============================================")
+    RunTimeAnalysis()           # Do Runtime Analysis
 
