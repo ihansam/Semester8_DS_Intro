@@ -7,6 +7,7 @@ class Node:
         self.value  = value
         self.left   = left
         self.right  = right
+
 # [BST Class]
 class BST:                      # Linked Structure Binary Search Tree
     def __init__(self):         # Empty BST initialize
@@ -318,31 +319,35 @@ from random import randint as rand
 
 def run(bst, n, shuffle):
     # make n elements BST
-    if shuffle:     # random case, random data
+    if shuffle:     # random case, random dataset
         for i in range(n):
             bst.put(rand(0, 2*n), 0)
-    else:           # worst case, sequential data
+    else:           # worst case, sequential dataset
         for i in range(n):
             bst.put(2*i, 0)
 
     # average INSERT time (ns)
     num = 10        # number of tries
     s = time()
-    for i in range(num):
-        bst.put(rand(0, 2*n), 0)
+    if shuffle:     # random case, random insert
+	    for i in range(num):
+	        bst.put(rand(0, 2*n), 0)
+    else:           # worst case, sequential insert
+        for i in range(num):
+            bst.put(2*(n+i), 0)
     e = time()
     intime = int((e-s)/num*1000000000)
 
     # average SEARCH time (ns)
     s = time()
-    for i in range(num):
+    for i in range(num):    # random search
         bst.get(rand(0, 2*n))
     e = time()
     stime = int((e-s)/num*1000000000)
 
     # aveage DELETE time (ns)
     s - time()
-    for i in range(num):
+    for i in range(num):    # random delete
         bst.delete(rand(0, 2*n))
     e = time()
     dtime = int((e-s)/num*1000000000)
@@ -355,23 +360,23 @@ def RunTimeAnalysis():
     print("{Linked-based}")
     for i in range(0, 7, 1):
         n = 10*(2**i)
-        bstlnk = BST()          # linked-based BST worst case
-        run(bstlnk, n, False)   # do not shuffle
+        bstlnk = BST()          # linked-based BST
+        run(bstlnk, n, False)   # worst case
     print("{Array-based}")
-    for n in range(2, 17, 2):
-        bstarr = BST_ARRAY()    # array-based BST worst case
-        run(bstarr, n, False)   # do not shuffle
+    for n in range(10, 20, 1):
+        bstarr = BST_ARRAY()    # array-based BST
+        run(bstarr, n, False)   # worst case
     print("[Common Case]")
     print("{Linked-based}")
-    for i in range(5, 11, 1):
+    for i in range(4, 12, 1):
         n = 2**i
-        bstlnk2 = BST()         # linked-based BST avg case
-        run(bstlnk2, n, True)   # shuffle
+        bstlnk2 = BST()         # linked-based BST
+        run(bstlnk2, n, True)   # average case
     print("{Array-based}")
-    for i in range(5, 11, 1):
+    for i in range(4, 12, 1):
         n = 2**i
-        bstarr2 = BST_ARRAY()   # array_based BST avg case
-        run(bstarr2, n, True)   # shuffle
+        bstarr2 = BST_ARRAY()   # array-based BST
+        run(bstarr2, n, True)   # average case
 
 if __name__ == "__main__":
     print("#1. linked based BST ===============================================")
